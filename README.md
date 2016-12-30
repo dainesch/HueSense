@@ -12,6 +12,7 @@ data for the current motion detection, the current light level and the current m
 * Display history graph of sensor data
 * QuickView mode (small view of current data without main window)
 * Set an alarm if motion detected (COMING SOON?)
+* Save collected data in database (COMING SOON?)
 
 ![Light sensor](./docs/light-tumb.png?raw=true)
 ![Motion sensor](./docs/motion-tumb.png?raw=true)
@@ -21,7 +22,12 @@ data for the current motion detection, the current light level and the current m
 
 [Screenshot of motion window](./docs/motion.png?raw=true)
 
-## Running and Download
+## Data collection
+No data is sent to any remote server, your privacy is guaranteed! 
 
-You need Java 8 to launch the application. 
 
+# Downloads
+
+Download the [latest release](https://github.com/dainesch/HueSense/releases/download/v1.0/HueSense-1.0.jar) and run it.
+
+You need Java 8 to run the program!
