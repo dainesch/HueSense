@@ -116,10 +116,6 @@ public class MainPresenter implements Initializable {
             }
         });
 
-        //TODO finish impl
-        alarmSettBut.setVisible(false);
-        alarmBut.setVisible(false);
-
         hideBut.setGraphic(new ImageView(UIUtils.getImage("hide.png")));
         quickBut.setGraphic(new ImageView(UIUtils.getImage("quickview.png")));
         alarmBut.setGraphic(new ImageView(UIUtils.getImage("alarm.png")));
@@ -176,6 +172,9 @@ public class MainPresenter implements Initializable {
     }
 
     private void showSensor(Sensor<?> sensor) {
+        if (sensor==null) {
+            return;
+        }
         Node o = sensorViews.get(sensor.getId());
         if (o == null) {
             switch (sensor.getType()) {

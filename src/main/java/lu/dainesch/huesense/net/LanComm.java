@@ -12,6 +12,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
@@ -60,11 +61,11 @@ public class LanComm {
             return ret;
         });
         this.pingDevices = Collections.synchronizedList(new ArrayList<>());
-        //TODO finish impl
-        /*store.addSensor(sensor);
+
+        store.addSensor(sensor);
         this.scheduleExec.scheduleWithFixedDelay(() -> {
             updatePingSensor();
-        }, 10, 1, TimeUnit.SECONDS);*/
+        }, 10, 1, TimeUnit.SECONDS);
     }
 
     private void updatePingSensor() {
