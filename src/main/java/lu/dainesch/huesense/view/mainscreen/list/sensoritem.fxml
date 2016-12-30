@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane styleClass="itemLeft" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lu.dainesch.huesense.view.mainscreen.list.SensorItemPresenter">
+   <padding>
+      <Insets bottom="5.0" top="5.0" />
+   </padding>
+   <center>
+      <BorderPane BorderPane.alignment="CENTER">
+         <top>
+            <Label fx:id="nameLabel" text="Hue temperature sensor 2" textFill="#757575" BorderPane.alignment="TOP_LEFT">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+         </top>
+         <BorderPane.margin>
+            <Insets left="10.0" />
+         </BorderPane.margin>
+         <center>
+            <Label fx:id="valueLabel" text="Label" textFill="#ff7107" BorderPane.alignment="CENTER_LEFT">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+         </center>
+      </BorderPane>
+   </center>
+   <right>
+      <BorderPane prefWidth="30.0" BorderPane.alignment="CENTER">
+         <center>
+            <ImageView fx:id="iconView" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../../../resources/temp.png" />
+               </image>
+            </ImageView>
+         </center>
+      </BorderPane>
+   </right>
+</BorderPane>

@@ -1,0 +1,74 @@
+
+
+.whiteBack {
+    -fx-background-color: white;
+}
+
+.list-cell:filled:selected:focused, .list-cell:filled:selected {
+    -fx-background-color: linear-gradient(from 0px 0px to 15px 0px, #00a6ff, white);
+
+    -fx-text-fill: black;
+}
+
+.list-cell:even { 
+    -fx-background-color: white;
+}
+.list-cell:odd { 
+    -fx-background-color: white;
+}
+
+.list-cell:filled:hover {
+    -fx-background-color: #f5f5f5;
+    -fx-text-fill: black;
+}
+
+.itemLeft {
+    -fx-border-color: #f5f5f5;
+    -fx-border-insets: 0;
+    -fx-border-width: 0 3 0 0;
+}
+
+.tempLabel {
+    -fx-background-radius: 10;
+    -fx-background-color: #ffc976;
+    -fx-text-fill: white;
+    -fx-padding: 5 10 5 10;
+}
+
+.motionLabel {
+    -fx-text-fill: #f28b00;
+    -fx-padding: 5 10 5 10;
+}
+
+.lightLabel {
+    -fx-text-fill: #3d84ff;
+    -fx-padding: 5 10 5 10;
+}
+
+.barButt {
+    -fx-background-color: white;
+    -fx-border-color: #e7e7e7;
+    -fx-border-insets: 2;
+    -fx-border-width: 1;
+    -fx-border-radius: 5;
+}
+.barButt:hover {
+    -fx-background-color: #f5f5f5;
+    -fx-background-insets: 2;
+    -fx-background-radius: 5;
+}
+.barButt:selected {
+    -fx-background-color: #beebff;
+    -fx-background-insets: 2;
+    -fx-background-radius: 5;
+}
+
+.barButt:pressed{
+    -fx-background-color: #ffc976;
+    -fx-background-insets: 2;
+    -fx-background-radius: 5;
+}
+
+.titleLabel {
+    -fx-text-fill: #3d84ff;
+}

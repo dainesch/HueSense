@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Text?>
+
+
+<BorderPane fx:id="borderPane" prefHeight="180.0" prefWidth="400.0" styleClass="whiteBack" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lu.dainesch.huesense.view.about.AboutPresenter">
+   <top>
+      <ImageView fx:id="logoImg" fitHeight="101.0" fitWidth="346.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+         <image>
+            <Image url="@../../../../../../resources/logo.png" />
+         </image>
+         <BorderPane.margin>
+            <Insets top="5.0" />
+         </BorderPane.margin>
+      </ImageView>
+   </top>
+   <bottom>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Copyright (c) 2016 dainesch" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets bottom="5.0" />
+         </BorderPane.margin>
+      </Text>
+   </bottom>
+   <center>
+      <Hyperlink onAction="#openLink" text="Github Repository (MIT Licence)" BorderPane.alignment="CENTER" />
+   </center>
+</BorderPane>

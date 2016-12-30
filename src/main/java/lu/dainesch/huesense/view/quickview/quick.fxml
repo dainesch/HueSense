@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+
+<VBox fx:id="vBox" alignment="TOP_CENTER" onMouseDragged="#moveMouseDragged" onMousePressed="#moveMousePressed" onMouseReleased="#moveMouseReleased" spacing="5.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lu.dainesch.huesense.view.quickview.QuickPresenter">
+   <children>
+      <Rectangle fx:id="moveRect" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="10.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="10.0">
+         <cursor>
+            <Cursor fx:constant="MOVE" />
+         </cursor>
+      </Rectangle>
+   </children>
+</VBox>

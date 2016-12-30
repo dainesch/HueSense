@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.transform.*?>
+<?import javafx.scene.effect.*?>
+
+<Group id='_root' xmlns:fx="http://javafx.com/fxml" xmlns:fxsvg="http://efxclipse.org/fxml-svg">
+	<children>
+		<Group
+			opacity="1.0"
+			>
+			<children>
+				<Circle
+					radius="0.9"
+					centerX="6.7"
+					centerY="4.2"
+					opacity="1"
+					>
+					<fill>
+						TRANSPARENT
+					</fill>
+					
+				</Circle>
+				<Circle
+					radius="0.9"
+					centerX="11.9"
+					centerY="4.2"
+					opacity="1"
+					>
+					<fill>
+						TRANSPARENT
+					</fill>
+					
+				</Circle>
+				<Circle
+					radius="0.9"
+					centerX="17.2"
+					centerY="4.2"
+					opacity="1"
+					>
+					<fill>
+						TRANSPARENT
+					</fill>
+					
+				</Circle>
+				<SVGPath
+					content="M11.9,7.5c-2.5,0-4.6,2-4.6,4.6c0,2.5,2,4.6,4.6,4.6c2.5,0,4.6-2,4.6-4.6C16.5,9.6,14.5,7.5,11.9,7.5z    M11.9,15.3c-1.8,0-3.3-1.5-3.3-3.3c0-1.8,1.5-3.3,3.3-3.3c1.8,0,3.3,1.5,3.3,3.3C15.2,13.9,13.7,15.3,11.9,15.3z"
+					opacity="1"
+					>
+					<fill>
+						TRANSPARENT
+					</fill>
+				</SVGPath>
+				<SVGPath
+					content="M24,18V6c0-0.1,0-1.5-0.7-3C22.6,1.7,21.1,0,18,0H6C6,0,4.5,0,3.1,0.7C1.7,1.4,0,2.9,0,6V18   c0,0.1,0,1.5,0.7,3C1.4,22.3,2.9,24,6,24H18c0.1,0,1.5,0,3-0.7C22.3,22.6,24,21.1,24,18z M11.9,3.3c0.5,0,0.9,0.4,0.9,0.9   c0,0.5-0.4,0.9-0.9,0.9c-0.5,0-0.9-0.4-0.9-0.9C11,3.7,11.4,3.3,11.9,3.3z M5.8,4.2c0-0.5,0.4-0.9,0.9-0.9c0.5,0,0.9,0.4,0.9,0.9   c0,0.5-0.4,0.9-0.9,0.9C6.2,5.1,5.8,4.7,5.8,4.2z M11.9,16.6c-2.5,0-4.6-2-4.6-4.6c0-2.5,2-4.6,4.6-4.6c2.5,0,4.6,2,4.6,4.6   C16.5,14.6,14.5,16.6,11.9,16.6z M17.2,5.1c-0.5,0-0.9-0.4-0.9-0.9c0-0.5,0.4-0.9,0.9-0.9c0.5,0,0.9,0.4,0.9,0.9   C18.1,4.7,17.7,5.1,17.2,5.1z"
+					opacity="1"
+					>
+					<fill>
+						<Color>
+							<red>0.00392156862745098</red>
+							<green>0.00784313725490196</green>
+							<blue>0.00784313725490196</blue>
+						</Color>
+					</fill>
+				</SVGPath>
+				<Circle
+					radius="3.3"
+					centerX="11.9"
+					centerY="12.1"
+					opacity="1"
+					>
+					<fill>
+						<Color>
+							<red>0.00392156862745098</red>
+							<green>0.00784313725490196</green>
+							<blue>0.00784313725490196</blue>
+						</Color>
+					</fill>
+					
+				</Circle>
+			</children>
+		</Group>
+	</children>
+</Group>
