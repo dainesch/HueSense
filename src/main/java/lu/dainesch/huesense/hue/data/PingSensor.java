@@ -13,6 +13,7 @@ import javafx.scene.chart.XYChart;
 import javafx.util.Duration;
 import javax.json.JsonObject;
 import lu.dainesch.huesense.HueSenseConfig;
+import lu.dainesch.huesense.hue.DBManager;
 
 public class PingSensor extends Sensor<PingSensor.PingValues> {
 
@@ -21,8 +22,8 @@ public class PingSensor extends Sensor<PingSensor.PingValues> {
     private final Map<String, XYChart.Series<Date, Number>> seriesMap;
     private boolean lastdetected;
 
-    public PingSensor(int id, HueSenseConfig config) {
-        super(id, SensorType.PING, config);
+    public PingSensor(int id, String uniqueID, HueSenseConfig config, DBManager dbMan) {
+        super(id, uniqueID, SensorType.PING, config, dbMan);
         graphInterval = new SimpleObjectProperty<>(GraphInterval.INTERVALS.get(1));
         data = FXCollections.observableArrayList();
         seriesMap = new HashMap<>();

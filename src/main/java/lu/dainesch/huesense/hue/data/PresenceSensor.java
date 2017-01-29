@@ -13,6 +13,7 @@ import javafx.util.Duration;
 import javax.json.JsonObject;
 import lu.dainesch.huesense.Constants;
 import lu.dainesch.huesense.HueSenseConfig;
+import lu.dainesch.huesense.hue.DBManager;
 
 public class PresenceSensor extends Sensor<Boolean> {
 
@@ -24,8 +25,8 @@ public class PresenceSensor extends Sensor<Boolean> {
     private PresenceEntry lastEntry = null;
     private boolean currentDetect = false;
 
-    public PresenceSensor(int id, HueSenseConfig config) {
-        super(id, SensorType.PRESENCE, config);
+    public PresenceSensor(int id, String uniqueID, HueSenseConfig config, DBManager dbMan) {
+        super(id, uniqueID, SensorType.PRESENCE, config, dbMan);
         data = FXCollections.observableArrayList();
         graphInterval = new SimpleObjectProperty<>(GraphInterval.INTERVALS.get(1));
     }

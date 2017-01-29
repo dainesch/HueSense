@@ -13,19 +13,26 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.util.Duration;
 import javax.json.JsonObject;
 import lu.dainesch.huesense.Constants;
 import lu.dainesch.huesense.HueSenseConfig;
+import lu.dainesch.huesense.hue.DBManager;
 
 public abstract class Sensor<A> implements Serializable, Comparable<Sensor<?>> {
 
     public static final long TIME_TO_KEEP = TimeUnit.DAYS.toMillis(7);
 
+    public static final String STMT_SEL_UID = "Select S_ID, SENSOR_NAME, SENSOR_TYPE, CREATED from SENSOR where UNIQUE_ID = ?";
+    public static final String STMT_UPD_NAME = "Update SENSOR set SENSOR_NAME = ? WHERE S_ID = ?";
+    public static final String STMT_CREATE = "Insert into SENSOR (SENSOR_NAME, SENSOR_TYPE, UNIQUE_ID, CREATED) values (?, ?, ?, ?)";
+
     protected final HueSenseConfig config;
+    protected final DBManager dbMan;
     protected final int id;
+    protected final String uniqueID;
     protected final SensorType type;
 
+    protected Long dbId;
     protected String name;
     protected Date lastUpdate;
     protected A currentValue;
@@ -37,10 +44,12 @@ public abstract class Sensor<A> implements Serializable, Comparable<Sensor<?>> {
     protected final IntegerProperty updateCount = new SimpleIntegerProperty(0);
     protected final BooleanProperty quickView = new SimpleBooleanProperty(false);
 
-    public Sensor(int id, SensorType type, HueSenseConfig config) {
+    public Sensor(int id, String uniqueID, SensorType type, HueSenseConfig config, DBManager dbMan) {
         this.id = id;
         this.type = type;
         this.config = config;
+        this.uniqueID = uniqueID;
+        this.dbMan = dbMan;
 
         quickView.set(config.getBoolean(Constants.QV_SENSOR + id));
         quickView.addListener((observable, oldValue, newValue) -> {
@@ -86,8 +95,20 @@ public abstract class Sensor<A> implements Serializable, Comparable<Sensor<?>> {
         return id;
     }
 
+    public String getUniqueID() {
+        return uniqueID;
+    }
+
     public SensorType getType() {
         return type;
+    }
+
+    public synchronized Long getDbId() {
+        return dbId;
+    }
+
+    public synchronized void setDbId(Long dbId) {
+        this.dbId = dbId;
     }
 
     public synchronized String getName() {

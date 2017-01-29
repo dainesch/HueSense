@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import lu.dainesch.huesense.hue.DBManager;
 import lu.dainesch.huesense.hue.DataStore;
 import lu.dainesch.huesense.hue.HueComm;
 import lu.dainesch.huesense.net.LanComm;
@@ -21,34 +22,35 @@ public class Launcher extends Application {
     private static final Logger LOG = LoggerFactory.getLogger(Launcher.class);
 
     private final HueSenseConfig config;
+    private final DBManager dbMan;
     private final DataStore store;
     private final HueComm hue;
     private final LanComm lan;
     private final MailService mailServ;
 
-
     public Launcher() {
         config = new HueSenseConfig();
-        store = new DataStore(config);
+        dbMan = new DBManager();
+        store = new DataStore(config, dbMan);
         hue = new HueComm(config, store);
-        lan = new LanComm(config, store);
+        lan = new LanComm(config, store, dbMan);
         mailServ = new MailService(config);
     }
 
     @Override
     public void start(Stage stage) throws Exception {
-        
+
         Platform.setImplicitExit(false);
 
         Injector.setConfigurationSource(config::getInjectionValue);
         Injector.setLogger(s -> LOG.info(s));
         Injector.setModelOrService(Logger.class, LOG);
         Injector.setModelOrService(HueSenseConfig.class, config);
+        Injector.setModelOrService(DBManager.class, dbMan);
         Injector.setModelOrService(DataStore.class, store);
         Injector.setModelOrService(HueComm.class, hue);
         Injector.setModelOrService(LanComm.class, lan);
         Injector.setModelOrService(MailService.class, mailServ);
-        
 
         ConnectingView connView = new ConnectingView();
         Scene scene = new Scene(connView.getView());
@@ -65,7 +67,7 @@ public class Launcher extends Application {
         UIUtils.setIcon(stage);
 
         stage.show();
-        
+
         hue.startConnecting();
 
     }

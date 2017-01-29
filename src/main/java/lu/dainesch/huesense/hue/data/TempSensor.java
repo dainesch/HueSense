@@ -12,6 +12,7 @@ import javafx.util.Duration;
 import javax.json.JsonObject;
 import lu.dainesch.huesense.Constants;
 import lu.dainesch.huesense.HueSenseConfig;
+import lu.dainesch.huesense.hue.DBManager;
 
 public class TempSensor extends Sensor<BigDecimal> {
 
@@ -21,8 +22,8 @@ public class TempSensor extends Sensor<BigDecimal> {
     private final ObjectProperty<GraphInterval> graphInterval;
     private final ObjectProperty<BigDecimal> tempOffset;
 
-    public TempSensor(int id, HueSenseConfig config) {
-        super(id, SensorType.TEMPERATURE, config);
+    public TempSensor(int id, String uniqueID, HueSenseConfig config, DBManager dbMan) {
+        super(id, uniqueID, SensorType.TEMPERATURE, config, dbMan);
         data = new XYChart.Series<>();
         data.setName("Temperature");
         graphInterval = new SimpleObjectProperty<>(GraphInterval.INTERVALS.get(1));
@@ -52,10 +53,10 @@ public class TempSensor extends Sensor<BigDecimal> {
             SensorValue<BigDecimal> val = new SensorValue<>(time, temp);
             updateValue(val);
 
-            JsonObject config = obj.getJsonObject("config");
-            setOn(config.getBoolean("on"));
-            setBattery(config.getInt("battery"));
-            setReachable(config.getBoolean("reachable"));
+            JsonObject conf = obj.getJsonObject("config");
+            setOn(conf.getBoolean("on"));
+            setBattery(conf.getInt("battery"));
+            setReachable(conf.getBoolean("reachable"));
 
         } catch (ParseException | NullPointerException | ClassCastException ex) {
             throw new UpdateException("Error updating temp sensor", ex);

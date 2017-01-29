@@ -19,6 +19,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lu.dainesch.huesense.HueSenseConfig;
+import lu.dainesch.huesense.hue.DBManager;
 import lu.dainesch.huesense.hue.DataStore;
 import lu.dainesch.huesense.hue.data.PingSensor;
 import lu.dainesch.huesense.net.data.NetworkDevice;
@@ -41,10 +42,10 @@ public class LanComm {
     private final ObservableList<NetworkDevice> devices = FXCollections.observableArrayList();
     private final BooleanProperty scanning = new SimpleBooleanProperty();
 
-    public LanComm(HueSenseConfig config, DataStore store) {
+    public LanComm(HueSenseConfig config, DataStore store, DBManager dbMan) {
         this.config = config;
 
-        this.sensor = new PingSensor(Integer.MAX_VALUE, config);
+        this.sensor = new PingSensor(Integer.MAX_VALUE,"PingSensor", config, dbMan);
         this.sensor.setName("Reachable devices");
 
         this.exec = Executors.newCachedThreadPool((Runnable r) -> {

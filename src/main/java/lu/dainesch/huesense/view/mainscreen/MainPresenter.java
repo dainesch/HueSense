@@ -108,7 +108,9 @@ public class MainPresenter implements Initializable {
         });
         sensorList.setItems(store.getSensors());
         sensorList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            showSensor(newValue);
+            if (newValue != null) {
+                showSensor(newValue);
+            }
         });
         store.getSensors().addListener((ListChangeListener.Change<? extends Sensor<?>> c) -> {
             if (sensorList.getSelectionModel().getSelectedItem() == null) {

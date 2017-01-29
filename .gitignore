@@ -1,2 +1,4 @@
 target/
 HueSense-app.jar
+/src/main/resources/tests/
+/derby.log
