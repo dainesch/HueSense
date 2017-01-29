@@ -23,7 +23,7 @@ public class DBManager {
         
         flyway = new Flyway();
         flyway.setDataSource(ds);
-        flyway.clean();
+        //flyway.clean();
         flyway.migrate();
 
         // just to be sure, try to close

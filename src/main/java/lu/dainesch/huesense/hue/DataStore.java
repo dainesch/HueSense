@@ -28,6 +28,8 @@ import org.slf4j.LoggerFactory;
 public class DataStore {
 
     private static final Logger LOG = LoggerFactory.getLogger(DataStore.class);
+    private static final String STMT_CREATE_ENTRY = "Insert into SENSOR_DATA (SENSOR_ID, CREATED, IS_ON, IS_REACHABLE, BATTERY_LEVEL)"
+            + "values (?, ?, ?, ?, ?)";
 
     private final HueSenseConfig config;
     private final DBManager dbMan;
@@ -64,11 +66,17 @@ public class DataStore {
                 if (sensor != null) {
                     try {
                         sensor.updateSensor(sensObj);
+                        if (isNew) {
+                            addSensor(sensor);
+                        }
+
+                        // database save
+                        Long entryId = createSensorDataEntry(sensor);
+                        if (entryId != null) {
+                            sensor.saveCurrentValueInDB(entryId);
+                        }
                     } catch (UpdateException ex) {
-                        LOG.error("Error reading sensor data", ex);
-                    }
-                    if (isNew) {
-                        addSensor(sensor);
+                        LOG.error("Error updating sensor data", ex);
                     }
                 }
 
@@ -77,7 +85,7 @@ public class DataStore {
         }
     }
 
-    public void addSensor(Sensor<?> sensor) {
+    public void addSensor(Sensor<?> sensor) throws UpdateException {
         addOrUpdateSensorDB(sensor);
 
         sensorMap.put(sensor.getId(), sensor);
@@ -106,7 +114,7 @@ public class DataStore {
         return null;
     }
 
-    private void addOrUpdateSensorDB(Sensor<?> sensor) {
+    private void addOrUpdateSensorDB(Sensor<?> sensor) throws UpdateException {
         String name = null;
         try (Connection conn = dbMan.getConnection()) {
             try (PreparedStatement stmt = conn.prepareStatement(Sensor.STMT_SEL_UID)) {
@@ -129,7 +137,7 @@ public class DataStore {
                     stmt.setTimestamp(4, new Timestamp(System.currentTimeMillis()));
                     stmt.executeUpdate();
                     ResultSet rs = stmt.getGeneratedKeys();
-                    while (rs.next()) {
+                    if (rs.next()) {
                         sensor.setDbId(rs.getLong(1));
                     }
                 }
@@ -143,9 +151,32 @@ public class DataStore {
             }
 
         } catch (SQLException ex) {
-            LOG.error("Error updating Sensor DB values", ex);
+            throw new UpdateException("Error updating Sensor DB values", ex);
 
         }
+    }
+
+    private Long createSensorDataEntry(Sensor<?> sensor) {
+        if (sensor == null || sensor.getDbId() == null) {
+            return null;
+        }
+        try (Connection conn = dbMan.getConnection()) {
+            try (PreparedStatement stmt = conn.prepareStatement(STMT_CREATE_ENTRY, Statement.RETURN_GENERATED_KEYS)) {
+                stmt.setLong(1, sensor.getDbId());
+                stmt.setTimestamp(2, new Timestamp(sensor.getLastUpdate().getTime()));
+                stmt.setBoolean(3, sensor.getOn());
+                stmt.setBoolean(4, sensor.getReachable());
+                stmt.setInt(5, sensor.getBattery());
+                stmt.executeUpdate();
+                ResultSet rs = stmt.getGeneratedKeys();
+                if (rs.next()) {
+                    return rs.getLong(1);
+                }
+            }
+        } catch (SQLException ex) {
+            LOG.error("Error Creating data entry", ex);
+        }
+        return null;
     }
 
     public ObservableList<Sensor<?>> getSensors() {

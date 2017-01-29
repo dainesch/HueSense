@@ -1,9 +1,17 @@
 package lu.dainesch.huesense.hue.data;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.NavigableSet;
+import java.util.Set;
 import java.util.TimeZone;
+import java.util.TreeSet;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -14,11 +22,20 @@ import javax.json.JsonObject;
 import lu.dainesch.huesense.Constants;
 import lu.dainesch.huesense.HueSenseConfig;
 import lu.dainesch.huesense.hue.DBManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class PresenceSensor extends Sensor<Boolean> {
 
+    private static final String INSERT_CUR_VAL = "Insert into PRESENCE_DATA (SD_ID, PRESENCE) values (?, ?)";
+    private static final String SELECT_RANGE = "Select p.SD_ID, p.PRESENCE, d.CREATED from PRESENCE_DATA p "
+            + "JOIN SENSOR_DATA d on d.SD_ID=p.SD_ID "
+            + "where d.SENSOR_ID = ? and d.CREATED > ? and d.CREATED <= ? "
+            + "order by d.created asc ";
+
     private static final String DETECT = "Motion detected";
     private static final String NOTHING = "No motion";
+    private static final Logger LOG = LoggerFactory.getLogger(PresenceSensor.class);
 
     private final ObservableList<PresenceEntry> data;
     private final ObjectProperty<GraphInterval> graphInterval;
@@ -45,14 +62,49 @@ public class PresenceSensor extends Sensor<Boolean> {
             SensorValue<Boolean> val = new SensorValue<>(time, pres);
             updateValue(val);
 
-            JsonObject config = obj.getJsonObject("config");
-            setOn(config.getBoolean("on"));
-            setBattery(config.getInt("battery"));
-            setReachable(config.getBoolean("reachable"));
+            JsonObject conf = obj.getJsonObject("config");
+            setOn(conf.getBoolean("on"));
+            setBattery(conf.getInt("battery"));
+            setReachable(conf.getBoolean("reachable"));
 
         } catch (ParseException | NullPointerException | ClassCastException ex) {
             throw new UpdateException("Error updating temp sensor", ex);
         }
+    }
+
+    @Override
+    public void saveCurrentValueInDB(Long dataId) throws UpdateException {
+        try (Connection conn = dbMan.getConnection()) {
+            try (PreparedStatement stmt = conn.prepareStatement(INSERT_CUR_VAL)) {
+                stmt.setLong(1, dataId);
+                stmt.setBoolean(2, currentValue);
+                stmt.executeUpdate();
+            }
+        } catch (SQLException ex) {
+            throw new UpdateException("Error updating presence data", ex);
+        }
+    }
+
+    @Override
+    public Set<SensorValue<Boolean>> getValuesInRange(Date start, Date end) {
+        NavigableSet<SensorValue<Boolean>> ret = new TreeSet<>();
+
+        try (Connection conn = dbMan.getConnection()) {
+            try (PreparedStatement stmt = conn.prepareStatement(SELECT_RANGE)) {
+                stmt.setLong(1, dbId);
+                stmt.setTimestamp(2, new Timestamp(start.getTime()));
+                long endTime = end == null ? System.currentTimeMillis() : end.getTime();
+                stmt.setTimestamp(3, new Timestamp(endTime));
+                ResultSet rs = stmt.executeQuery();
+                while (rs.next()) {
+                    SensorValue<Boolean> val = new SensorValue<>(rs.getTimestamp("CREATED"), rs.getBoolean("PRESENCE"));
+                    ret.add(val);
+                }
+            }
+        } catch (SQLException ex) {
+            LOG.error("Error querying light values", ex);
+        }
+        return ret;
     }
 
     @Override

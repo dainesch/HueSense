@@ -2,10 +2,18 @@ package lu.dainesch.huesense.hue.data;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.NavigableSet;
+import java.util.Set;
 import java.util.TimeZone;
+import java.util.TreeSet;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.chart.XYChart;
@@ -14,10 +22,18 @@ import javax.json.JsonObject;
 import lu.dainesch.huesense.Constants;
 import lu.dainesch.huesense.HueSenseConfig;
 import lu.dainesch.huesense.hue.DBManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class LightSensor extends Sensor<LightSensor.LightLevel> {
 
+    private static final String INSERT_CUR_VAL = "Insert into LIGHT_DATA (SD_ID, LIGHT_LEVEL, IS_DARK, IS_DAYLIGHT) values (?, ?, ?, ?)";
+    private static final String SELECT_RANGE = "Select l.SD_ID, l.LIGHT_LEVEL, l.IS_DARK, l.IS_DAYLIGHT, d.CREATED from LIGHT_DATA l "
+            + "JOIN SENSOR_DATA d on d.SD_ID=l.SD_ID "
+            + "where d.SENSOR_ID = ? and d.CREATED > ? and d.CREATED <= ? "
+            + "order by d.created asc ";
     public static final String LUX_SUFFIX = " lux";
+    private static final Logger LOG = LoggerFactory.getLogger(LightSensor.class);
 
     private final XYChart.Series<Date, Number> data;
     private final ObjectProperty<GraphInterval> graphInterval;
@@ -52,6 +68,44 @@ public class LightSensor extends Sensor<LightSensor.LightLevel> {
         } catch (ParseException | NullPointerException | ClassCastException ex) {
             throw new UpdateException("Error updating temp sensor", ex);
         }
+    }
+
+    @Override
+    public void saveCurrentValueInDB(Long dataId) throws UpdateException {
+        try (Connection conn = dbMan.getConnection()) {
+            try (PreparedStatement stmt = conn.prepareStatement(INSERT_CUR_VAL)) {
+                stmt.setLong(1, dataId);
+                stmt.setInt(2, currentValue.getLevel());
+                stmt.setBoolean(3, currentValue.isDark());
+                stmt.setBoolean(4, currentValue.isDayLight());
+                stmt.executeUpdate();
+            }
+        } catch (SQLException ex) {
+            throw new UpdateException("Error updating presence data", ex);
+        }
+    }
+
+    @Override
+    public Set<SensorValue<LightLevel>> getValuesInRange(Date start, Date end) {
+        NavigableSet<SensorValue<LightLevel>> ret = new TreeSet<>();
+
+        try (Connection conn = dbMan.getConnection()) {
+            try (PreparedStatement stmt = conn.prepareStatement(SELECT_RANGE)) {
+                stmt.setLong(1, dbId);
+                stmt.setTimestamp(2, new Timestamp(start.getTime()));
+                long endTime = end == null ? System.currentTimeMillis() : end.getTime();
+                stmt.setTimestamp(3, new Timestamp(endTime));
+                ResultSet rs = stmt.executeQuery();
+                while (rs.next()) {
+                    LightLevel level = new LightLevel(rs.getInt("LIGHT_LEVEL"), rs.getBoolean("IS_DARK"), rs.getBoolean("IS_DAYLIGHT"));
+                    SensorValue<LightLevel> val = new SensorValue<>(rs.getTimestamp("CREATED"), level);
+                    ret.add(val);
+                }
+            }
+        } catch (SQLException ex) {
+            LOG.error("Error querying light values", ex);
+        }
+        return ret;
     }
 
     @Override

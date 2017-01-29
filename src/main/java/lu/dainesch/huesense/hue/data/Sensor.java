@@ -1,13 +1,9 @@
 package lu.dainesch.huesense.hue.data;
 
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.Date;
-import java.util.NavigableSet;
 import java.util.Objects;
 import java.util.Set;
-import java.util.TreeSet;
-import java.util.concurrent.TimeUnit;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
@@ -19,8 +15,6 @@ import lu.dainesch.huesense.HueSenseConfig;
 import lu.dainesch.huesense.hue.DBManager;
 
 public abstract class Sensor<A> implements Serializable, Comparable<Sensor<?>> {
-
-    public static final long TIME_TO_KEEP = TimeUnit.DAYS.toMillis(7);
 
     public static final String STMT_SEL_UID = "Select S_ID, SENSOR_NAME, SENSOR_TYPE, CREATED from SENSOR where UNIQUE_ID = ?";
     public static final String STMT_UPD_NAME = "Update SENSOR set SENSOR_NAME = ? WHERE S_ID = ?";
@@ -40,7 +34,6 @@ public abstract class Sensor<A> implements Serializable, Comparable<Sensor<?>> {
     protected Boolean reachable;
     protected int battery = 100;
 
-    protected final NavigableSet<SensorValue<A>> values = Collections.synchronizedNavigableSet(new TreeSet<>());
     protected final IntegerProperty updateCount = new SimpleIntegerProperty(0);
     protected final BooleanProperty quickView = new SimpleBooleanProperty(false);
 
@@ -64,6 +57,10 @@ public abstract class Sensor<A> implements Serializable, Comparable<Sensor<?>> {
 
     public abstract String getValueAsString(A value);
 
+    public abstract void saveCurrentValueInDB(Long dataId) throws UpdateException;
+
+    public abstract Set<SensorValue<A>> getValuesInRange(Date start, Date end);
+
     public String getCurrentValueAsString() {
         A val = getCurrentValue();
         if (val != null) {
@@ -74,21 +71,12 @@ public abstract class Sensor<A> implements Serializable, Comparable<Sensor<?>> {
 
     public synchronized void updateValue(SensorValue<A> val) {
         lastUpdate = val.getTime();
-        currentValue = val.getValue();
-        if (values.add(val)) {
+        if (currentValue == null || !currentValue.equals(val)) {
             Platform.runLater(() -> updateView(val));
         }
+        currentValue = val.getValue();
         Platform.runLater(() -> updateCount.set(updateCount.get() + 1));
-        long timeout = System.currentTimeMillis() - TIME_TO_KEEP;
-        values.removeIf(v -> v.getTime().getTime() < timeout);
-    }
 
-    public Set<SensorValue<A>> getValuesInRange(Date start, Date end) {
-        if (end == null) {
-            return values.tailSet(new SensorValue(start, null));
-        } else {
-            return values.subSet(new SensorValue(start, null), new SensorValue(end, null));
-        }
     }
 
     public int getId() {
