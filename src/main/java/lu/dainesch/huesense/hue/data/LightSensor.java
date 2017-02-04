@@ -46,6 +46,12 @@ public class LightSensor extends Sensor<LightSensor.LightLevel> {
     }
 
     @Override
+    public void initSensor() {
+        // load data
+        setGraphInterval(GraphInterval.INTERVALS.get(1));
+    }
+
+    @Override
     public void updateSensor(JsonObject obj) throws UpdateException {
         try {
             setName(obj.getString("name"));
@@ -132,18 +138,14 @@ public class LightSensor extends Sensor<LightSensor.LightLevel> {
     }
 
     public void setGraphInterval(GraphInterval val) {
-        if (graphInterval.get().getDuration().lessThan(val.getDuration())) {
-            // longer interval
-            Date start = new Date(System.currentTimeMillis() - (long) val.getDuration().toMillis());
-            data.getData().removeAll(data.getData());   // clear does not work
-            graphInterval.set(val);
-            getValuesInRange(start, null).forEach((s) -> {
-                updateView(s);
-            });
-        } else {
-            graphInterval.set(val);
-            updateView(null);
-        }
+
+        Date start = new Date(System.currentTimeMillis() - (long) val.getDuration().toMillis());
+        data.getData().removeAll(data.getData());   // clear does not work
+        graphInterval.set(val);
+        getValuesInRange(start, null).forEach((s) -> {
+            updateView(s);
+        });
+
     }
 
     private static BigDecimal toLux(int input) {

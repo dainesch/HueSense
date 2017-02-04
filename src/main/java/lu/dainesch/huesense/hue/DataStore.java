@@ -92,6 +92,7 @@ public class DataStore {
         Platform.runLater(() -> {
             sensors.add(sensor);
             FXCollections.sort(sensors);
+            sensor.initSensor();
         });
     }
 

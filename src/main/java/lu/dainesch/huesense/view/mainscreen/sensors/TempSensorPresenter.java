@@ -73,9 +73,11 @@ public class TempSensorPresenter implements Initializable {
         isNameEdit = false;
 
         NumberAxis numberAxis = new NumberAxis();
+        numberAxis.setForceZeroInRange(false);
         DateAxis dateAxis = new DateAxis();
         tempChart = new LineChart<>(dateAxis, numberAxis);
         tempChart.setLegendVisible(false);
+        tempChart.setCreateSymbols(false);
         contentPane.setCenter(tempChart);
 
         intervalCB.setItems(GraphInterval.INTERVALS);

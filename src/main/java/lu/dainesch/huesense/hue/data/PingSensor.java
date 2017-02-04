@@ -38,6 +38,12 @@ public class PingSensor extends Sensor<PingSensor.PingValues> {
         seriesMap = new HashMap<>();
     }
 
+    @Override
+    public void initSensor() {
+        // load data
+        setGraphInterval(GraphInterval.INTERVALS.get(1));
+    }
+
     public void updateSensor(Map<String, Integer> values) {
         SensorValue<PingValues> val = new SensorValue<>(new Date(), new PingValues(values));
 
@@ -118,20 +124,16 @@ public class PingSensor extends Sensor<PingSensor.PingValues> {
     }
 
     public void setGraphInterval(GraphInterval val) {
-        if (graphInterval.get().getDuration().lessThan(val.getDuration())) {
-            // longer interval
-            Date start = new Date(System.currentTimeMillis() - (long) val.getDuration().toMillis());
-            for (XYChart.Series<Date, Number> ser : data) {
-                ser.getData().removeAll(ser.getData());   // clear does not work
-            }
-            graphInterval.set(val);
-            getValuesInRange(start, null).forEach((s) -> {
-                updateView(s);
-            });
-        } else {
-            graphInterval.set(val);
-            updateView(null);
+
+        Date start = new Date(System.currentTimeMillis() - (long) val.getDuration().toMillis());
+        for (XYChart.Series<Date, Number> ser : data) {
+            ser.getData().removeAll(ser.getData());   // clear does not work
         }
+        graphInterval.set(val);
+        getValuesInRange(start, null).forEach((s) -> {
+            updateView(s);
+        });
+
     }
 
     public static class PingValues {

@@ -49,6 +49,12 @@ public class PresenceSensor extends Sensor<Boolean> {
     }
 
     @Override
+    public void initSensor() {
+        // load data
+        setGraphInterval(GraphInterval.INTERVALS.get(1));
+    }
+
+    @Override
     public void updateSensor(JsonObject obj) throws UpdateException {
         try {
             setName(obj.getString("name"));
@@ -156,18 +162,14 @@ public class PresenceSensor extends Sensor<Boolean> {
     }
 
     public void setGraphInterval(GraphInterval val) {
-        if (graphInterval.get().getDuration().lessThan(val.getDuration())) {
-            // longer interval
-            Date start = new Date(System.currentTimeMillis() - (long) val.getDuration().toMillis());
-            data.removeAll(data);   // clear does not work
-            graphInterval.set(val);
-            getValuesInRange(start, null).forEach((s) -> {
-                updateView(s);
-            });
-        } else {
-            graphInterval.set(val);
-            updateView(null);
-        }
+
+        Date start = new Date(System.currentTimeMillis() - (long) val.getDuration().toMillis());
+        data.removeAll(data);   // clear does not work
+        graphInterval.set(val);
+        getValuesInRange(start, null).forEach((s) -> {
+            updateView(s);
+        });
+
     }
 
     @Override

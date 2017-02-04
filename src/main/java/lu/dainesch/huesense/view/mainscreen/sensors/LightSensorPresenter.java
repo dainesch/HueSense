@@ -64,6 +64,7 @@ public class LightSensorPresenter implements Initializable {
         DateAxis dateAxis = new DateAxis();
         lightChart = new LineChart<>(dateAxis, numberAxis);
         lightChart.setLegendVisible(false);
+        lightChart.setCreateSymbols(false);
         contentPane.setCenter(lightChart);
 
         intervalCB.setItems(GraphInterval.INTERVALS);

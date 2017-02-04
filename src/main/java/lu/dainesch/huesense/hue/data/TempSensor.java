@@ -50,6 +50,13 @@ public class TempSensor extends Sensor<BigDecimal> {
         tempOffset.addListener((observable, oldValue, newValue) -> {
             changeTempOffset();
         });
+
+    }
+
+    @Override
+    public void initSensor() {
+        // load data
+        setGraphInterval(GraphInterval.INTERVALS.get(1));
     }
 
     @Override
@@ -131,7 +138,7 @@ public class TempSensor extends Sensor<BigDecimal> {
             return;
         }
 
-        data.getData().add(new XYChart.Data<>(val.getTime(), val.getValue().add(tempOffset.get())));
+        data.getData().add(new XYChart.Data<>(val.getTime(), val.getValue().add(tempOffset.get()).doubleValue()));
     }
 
     public XYChart.Series<Date, Number> getData() {
@@ -144,18 +151,14 @@ public class TempSensor extends Sensor<BigDecimal> {
     }
 
     public void setGraphInterval(GraphInterval val) {
-        if (graphInterval.get().getDuration().lessThan(val.getDuration())) {
-            // longer interval
-            Date start = new Date(System.currentTimeMillis() - (long) val.getDuration().toMillis());
-            data.getData().removeAll(data.getData());   // clear does not work
-            graphInterval.set(val);
-            getValuesInRange(start, null).forEach((s) -> {
-                updateView(s);
-            });
-        } else {
-            graphInterval.set(val);
-            updateView(null);
-        }
+
+        Date start = new Date(System.currentTimeMillis() - (long) val.getDuration().toMillis());
+        data.getData().removeAll(data.getData());   // clear does not work
+        graphInterval.set(val);
+        getValuesInRange(start, null).forEach((s) -> {
+            updateView(s);
+        });
+
     }
 
     private void changeTempOffset() {

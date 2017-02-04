@@ -50,6 +50,8 @@ public abstract class Sensor<A> implements Serializable, Comparable<Sensor<?>> {
         });
 
     }
+    
+    public abstract void initSensor();
 
     public abstract void updateSensor(JsonObject obj) throws UpdateException;
 

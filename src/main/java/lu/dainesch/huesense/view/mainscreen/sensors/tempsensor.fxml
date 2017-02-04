@@ -64,7 +64,7 @@
          <top>
             <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <items>
-                  <Label text="Max interval: " />
+                  <Label text="Show :" />
                   <ChoiceBox fx:id="intervalCB" prefWidth="150.0" />
                   <Pane />
                   <Label text="Temp offset: " />
