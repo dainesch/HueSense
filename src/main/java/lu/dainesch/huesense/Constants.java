@@ -31,5 +31,7 @@ public class Constants {
     public static final String DB_FILE = "/derby.db";
 
     public static final String JDBC = "jdbc:derby:" + ENV_USER_HOME + WORK_DIR + DB_FILE + ";create=true";
+    
+    public static final String CSV_SEP = ",";
 
 }

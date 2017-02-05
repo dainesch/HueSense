@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>lu.dainesch</groupId>
     <artifactId>HueSense</artifactId>
-    <version>1.0</version>
+    <version>1.1</version>
     
     <packaging>jar</packaging>
     <name>HueSense</name>
@@ -78,6 +78,10 @@
             </resource>
             <resource>
                 <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>tests/**.*</exclude>
+                    <exclude>sources/**.*</exclude>
+                </excludes>
             </resource>
         </resources>
     </build>

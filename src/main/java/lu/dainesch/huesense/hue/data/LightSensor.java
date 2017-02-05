@@ -148,6 +148,17 @@ public class LightSensor extends Sensor<LightSensor.LightLevel> {
 
     }
 
+    @Override
+    public String[] getCSVHeader() {
+        return new String[]{"Time", "Dark", "Daylight", "Raw Value", "Lux"};
+    }
+
+    @Override
+    public String[] getCSVEntry(SensorValue<LightLevel> val, SimpleDateFormat sdf) {
+        return new String[]{sdf.format(val.getTime()), String.valueOf(val.getValue().isDark()), String.valueOf(val.getValue().isDayLight()),
+            String.valueOf(val.getValue().getLevel()), String.valueOf(toLux(val.getValue().getLevel()))};
+    }
+
     private static BigDecimal toLux(int input) {
         // linear interpolation from table in api docs
         double val = (double) input;

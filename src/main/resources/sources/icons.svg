@@ -26,9 +26,9 @@
      showgrid="true"
      inkscape:current-layer="layer1"
      inkscape:document-units="px"
-     inkscape:cy="516.00956"
-     inkscape:cx="333.73741"
-     inkscape:zoom="5.6"
+     inkscape:cy="519.62756"
+     inkscape:cx="463.28353"
+     inkscape:zoom="2.8"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -494,6 +494,50 @@
        inkscape:connector-curvature="0"
        inkscape:export-xdpi="35.896099"
        inkscape:export-ydpi="35.896099" />
+    <rect
+       style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect4191"
+       width="28.304478"
+       height="32.033882"
+       x="394.99829"
+       y="440.20523" />
+    <ellipse
+       style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path4193"
+       cx="409.13367"
+       cy="440.68143"
+       rx="14.163994"
+       ry="7.126533" />
+    <ellipse
+       style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path4193-1"
+       cx="409.19266"
+       cy="471.97729"
+       rx="14.163994"
+       ry="7.126533" />
+    <path
+       style="fill:#000000;fill-rule:evenodd;stroke:#000000;stroke-width:1.56639719px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 509.22782,478.42731 -13.69189,6.48491 4.69919,2.95422 c -2.79042,8.91335 -4.36895,8.8166 -9.27615,11.10261 l 0.36494,5.01559 c 7.24752,-3.7653 8.31933,-0.9887 13.65114,-13.78897 l 4.25276,2.19919 z"
+       id="path4227"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccccccc"
+       inkscape:export-filename="E:\Projects\Lighty\HueSense\src\main\resources\export.png"
+       inkscape:export-xdpi="40.005482"
+       inkscape:export-ydpi="40.005482" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:bold;font-size:20px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;-inkscape-font-specification:'sans-serif Bold';font-stretch:normal;font-variant:normal;"
+       x="475"
+       y="522.36218"
+       id="text4229"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="E:\Projects\Lighty\HueSense\src\main\resources\export.png"
+       inkscape:export-xdpi="40.005482"
+       inkscape:export-ydpi="40.005482"><tspan
+         sodipodi:role="line"
+         id="tspan4231"
+         x="475"
+         y="522.36218">CSV</tspan></text>
   </g>
   <g
      id="g5370"

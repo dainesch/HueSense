@@ -41,6 +41,7 @@ import lu.dainesch.huesense.hue.data.TempSensor;
 import lu.dainesch.huesense.view.UIUtils;
 import lu.dainesch.huesense.view.about.AboutView;
 import lu.dainesch.huesense.view.alarm.AlarmConfigView;
+import lu.dainesch.huesense.view.export.ExportView;
 import lu.dainesch.huesense.view.mainscreen.sensors.LightSensorPresenter;
 import lu.dainesch.huesense.view.mainscreen.sensors.LightSensorView;
 import lu.dainesch.huesense.view.mainscreen.sensors.PingSensorPresenter;
@@ -80,6 +81,8 @@ public class MainPresenter implements Initializable {
     private Button alarmSettBut;
     @FXML
     private Button aboutBut;
+    @FXML
+    private Button exportBut;
 
     @Inject
     private HueComm hue;
@@ -127,6 +130,7 @@ public class MainPresenter implements Initializable {
         alarmBut.setGraphic(new ImageView(UIUtils.getImage("alarm.png")));
         alarmSettBut.setGraphic(new ImageView(UIUtils.getImage("alarm_sett.png")));
         aboutBut.setGraphic(new ImageView(UIUtils.getImage("about.png")));
+        exportBut.setGraphic(new ImageView(UIUtils.getImage("export.png")));
         hideBut.setSelected(config.getBoolean(Constants.HIDE_ON_CLOSE));
         quickBut.setSelected(config.getBoolean(Constants.SHOW_QV));
         onQuickBut(null);
@@ -269,6 +273,12 @@ public class MainPresenter implements Initializable {
     void onAlarmSett(ActionEvent event) {
         AlarmConfigView acv = new AlarmConfigView();
         acv.getView();
+    }
+
+    @FXML
+    void onExport(ActionEvent event) {
+        ExportView export = new ExportView();
+        export.getView();
     }
 
 }

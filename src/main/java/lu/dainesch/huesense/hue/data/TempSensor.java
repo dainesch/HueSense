@@ -178,4 +178,14 @@ public class TempSensor extends Sensor<BigDecimal> {
         return tempOffset;
     }
 
+    @Override
+    public String[] getCSVHeader() {
+        return new String[]{"Time", "Temperature"};
+    }
+
+    @Override
+    public String[] getCSVEntry(SensorValue<BigDecimal> val, SimpleDateFormat sdf) {
+        return new String[]{sdf.format(val.getTime()), val.getValue().toString()};
+    }
+
 }

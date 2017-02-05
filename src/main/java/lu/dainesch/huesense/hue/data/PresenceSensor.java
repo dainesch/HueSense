@@ -180,6 +180,16 @@ public class PresenceSensor extends Sensor<Boolean> {
         return NOTHING;
     }
 
+    @Override
+    public String[] getCSVHeader() {
+        return new String[]{"Time", "Presence"};
+    }
+
+    @Override
+    public String[] getCSVEntry(SensorValue<Boolean> val, SimpleDateFormat sdf) {
+        return new String[]{sdf.format(val.getTime()), val.getValue().toString()};
+    }
+
     public static class PresenceEntry {
 
         private final SimpleStringProperty date = new SimpleStringProperty();

@@ -3,6 +3,7 @@ package lu.dainesch.huesense.hue.data;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -121,6 +122,16 @@ public class PingSensor extends Sensor<PingSensor.PingValues> {
             return count + " device(s) present";
         }
         return "No device present";
+    }
+    
+    @Override
+    public String[] getCSVHeader() {
+        return new String[]{"Time", ""};
+    }
+
+    @Override
+    public String[] getCSVEntry(SensorValue<PingValues> val, SimpleDateFormat sdf) {
+        return new String[]{sdf.format(val.getTime()), val.getValue().toString()};
     }
 
     public void setGraphInterval(GraphInterval val) {

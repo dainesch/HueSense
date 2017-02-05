@@ -1,6 +1,14 @@
 package lu.dainesch.huesense.hue.data;
 
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
@@ -50,7 +58,7 @@ public abstract class Sensor<A> implements Serializable, Comparable<Sensor<?>> {
         });
 
     }
-    
+
     public abstract void initSensor();
 
     public abstract void updateSensor(JsonObject obj) throws UpdateException;
@@ -62,6 +70,34 @@ public abstract class Sensor<A> implements Serializable, Comparable<Sensor<?>> {
     public abstract void saveCurrentValueInDB(Long dataId) throws UpdateException;
 
     public abstract Set<SensorValue<A>> getValuesInRange(Date start, Date end);
+
+    public abstract String[] getCSVHeader();
+
+    public abstract String[] getCSVEntry(SensorValue<A> val, SimpleDateFormat sdf);
+
+    public void exportCSV(Date start, Date end, SimpleDateFormat sdf, Path file) throws IOException {
+
+        Set<SensorValue<A>> vals = getValuesInRange(start, end);
+
+        try (PrintWriter p = new PrintWriter(new OutputStreamWriter(
+                Files.newOutputStream(file, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE), StandardCharsets.UTF_8))) {
+            printCSV(p, getCSVHeader());
+
+            vals.forEach((val) -> {
+                printCSV(p, getCSVEntry(val, sdf));
+            });
+        }
+    }
+
+    protected void printCSV(PrintWriter p, String... values) {
+        for (int i = 0; i < values.length; i++) {
+            p.write(values[i]);
+            if (i != values.length - 1) {
+                p.write(Constants.CSV_SEP);
+            }
+        }
+        p.println();
+    }
 
     public String getCurrentValueAsString() {
         A val = getCurrentValue();
@@ -185,6 +221,11 @@ public abstract class Sensor<A> implements Serializable, Comparable<Sensor<?>> {
     @Override
     public int compareTo(Sensor<?> o) {
         return id - o.id;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 
     public static class SensorValue<A> implements Comparable<SensorValue<A>> {

@@ -40,6 +40,7 @@
          <children>
             <ToggleButton fx:id="hideBut" contentDisplay="TOP" mnemonicParsing="false" onAction="#onHideBut" prefHeight="60.0" prefWidth="110.0" styleClass="barButt" text="Hide on close" />
             <ToggleButton fx:id="quickBut" contentDisplay="TOP" mnemonicParsing="false" onAction="#onQuickBut" prefHeight="60.0" prefWidth="110.0" styleClass="barButt" text="QuickView" />
+            <Button fx:id="exportBut" contentDisplay="TOP" mnemonicParsing="false" onAction="#onExport" prefHeight="60.0" prefWidth="110.0" styleClass="barButt" text="Export" />
             <Button fx:id="aboutBut" contentDisplay="TOP" mnemonicParsing="false" onAction="#onAbout" prefHeight="60.0" prefWidth="110.0" styleClass="barButt" text="About" />
             <ToggleButton fx:id="alarmBut" contentDisplay="TOP" mnemonicParsing="false" onAction="#onAlarm" prefHeight="60.0" prefWidth="110.0" styleClass="barButt" text="Alarm" />
             <Button fx:id="alarmSettBut" contentDisplay="TOP" mnemonicParsing="false" onAction="#onAlarmSett" prefHeight="60.0" prefWidth="110.0" styleClass="barButt" text="Alarm settings" />
